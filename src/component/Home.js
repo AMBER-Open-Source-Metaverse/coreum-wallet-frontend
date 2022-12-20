@@ -1,16 +1,37 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from './Header';
+import useCookie from '../useCookie';
+import axios from 'axios';
 
-export default function Home({isLogged, setIsLogged}) {
+export default function Home() {
 
-    const [balance, setBalance] = useState(12555);
+    const [balance, setBalance] = useState(0);
+    const [isLogged, updateIsLogged] = useCookie('isLogged', 0);
+    const [account, setAccount] = useCookie('address', '');
+    const backend_endpoint = process.env.REACT_APP_BACKEND_ENDPOINT;
+    const denomDecimal = Number(process.env.REACT_APP_DENOM_DECIMAL);
+
+    const getBalance = async (_account) => {
+        try {
+            const response = await axios.get(`${backend_endpoint}/get-balance/${_account}`, (res, err) => {
+                return res.data;
+            });
+            if (response.data.type == "success") setBalance(Number(response.data.data) / (10 ** denomDecimal));
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useState(() => {
+        if (account) getBalance(account);
+    }, [account]);
 
     return (
         <div className='home bg-[#0B161E] min-h-screen'>
-            <Header isLogged={isLogged} setIsLogged={setIsLogged}/>
+            <Header />
             {
-                isLogged ?
+                isLogged == 1 ?
                     <div className='content flex flex-col text-center justify-center w-full pt-32 '>
                         <p className='font-bold m-3 text-6xl text-[#A1A1A8]'>
                             {balance} CORE

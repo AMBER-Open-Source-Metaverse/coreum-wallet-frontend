@@ -2,14 +2,40 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from './Header';
 import VerfiyPharse from './VerifyPharse';
+import axios from 'axios';
+import useClipboard from 'react-use-clipboard';
 
-export default function SetupPassPhraseNewAccount({isLogged, setIsLogged}) {
+export default function SetupPassPhraseNewAccount() {
 	const [passphrase, setPassphrase] = useState([]);
 	const [step, setStep] = useState('displayPasspharse');
-    const [account, setAccount] = useState('39d01814113b4c7d3bcd05549fa6b8845316b39407525cbf45b052e47455c557');
+	const [mnemonicStr, setMnemonicStr] = useState('');
+	const [selectedWordIndex, setSelectedWordIndex] = useState();
+	const [account, setAccount] = useState();
+	const [isCopied, setIsCopied] = useClipboard(mnemonicStr, {
+		successDuration: 200,
+	});
+	const backend_endpoint = process.env.REACT_APP_BACKEND_ENDPOINT;
+
+	const createNewAccount = async () => {
+		try {
+			const response = await axios.get(`${backend_endpoint}/create-new-wallet`, (res, err) => {
+				return res.data;
+			});
+			setMnemonicStr(response.data.mnemonic);
+			setPassphrase(response.data.mnemonic.split(/[ ,]+/));
+			setAccount(response.data.address);
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
+	const handleContinue = () => {
+		setSelectedWordIndex(Math.floor(Math.random() * passphrase.length));
+		setStep('verifyPasspharse');
+	}
 
 	useEffect(() => {
-		setPassphrase(["prize", 'modify', 'ridge', 'advice', 'middle', 'vague', 'kiss', 'camp', 'cricket', 'bring', 'manual', 'smile'])
+		createNewAccount();
 	}, []);
 
 	return (
@@ -42,12 +68,14 @@ export default function SetupPassPhraseNewAccount({isLogged, setIsLogged}) {
 							<div className='actions flex pt-3'>
 								<button
 									className='bg-[#122633] px-10 py-3 rounded-full w-max m-auto inline-flex items-center'
+									onClick={setIsCopied}
 								>
-									<img src="./assets/copyIcon.svg" alt='Copy Icon' className='h-[18px]' />
+									<img src={isCopied ? "./assets/copiedIcon.svg" : "./assets/copyIcon.svg"} alt='Copy Icon' className='h-[18px]' />
 									<p className='font-bold ml-2 text-[#25d695]'>Cpoy</p>
 								</button>
 								<button
 									className='bg-[#122633] px-10 py-3 rounded-full w-max m-auto inline-flex items-center'
+									onClick={createNewAccount}
 								>
 									<img src="./assets/syncIcon.svg" alt='Sync Icon' className='h-[18px]' />
 									<p className='font-bold ml-2 text-[#25d695]'>Generate New</p>
@@ -56,14 +84,14 @@ export default function SetupPassPhraseNewAccount({isLogged, setIsLogged}) {
 						</div>
 						<button
 							className='bg-gradient-to-r from-[#179b69] to-[#25d695] px-10 py-3 rounded-full font-bold'
-							onClick={() => setStep('verifyPasspharse')}
+							onClick={handleContinue}
 						>
 							Continue
 						</button>
 						<Link to="/" className='text-[#727279] my-10 font-bold w-max m-auto'>Cancel</Link>
 					</div>
 					:
-					<VerfiyPharse setIsLogged={setIsLogged} />
+					<VerfiyPharse targetWord={passphrase[selectedWordIndex]} targetIndex={selectedWordIndex} account={account}/>
 			}
 
 		</div>

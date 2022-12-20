@@ -1,21 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import useClipboard from 'react-use-clipboard';
+import useCookie from '../useCookie';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Header({isLogged, setIsLogged}) {
+export default function Header() {
 
-    const [account, setAccount] = useState('39d01814113b4c7d3bcd05549fa6b8845316b39407525cbf45b052e47455c557');
+    const [account, setAccount] = useCookie('address', '');
     const [showAccount, isShowAccount] = useState(false);
+    const [isLogged, updateIsLogged] = useCookie('isLogged', 0);
+    const history = useHistory();
+    const [isCopied, setIsCopied] = useClipboard(account, {
+		successDuration: 200,
+	});
+
+    const handleLogout = () => {
+        updateIsLogged(0, 0);
+        setAccount('', 0);
+        window.location.reload();
+    }
 
     return (
         <div className='header absolute w-full'>
             <div className='absolute z-20 w-full h-7 flex flex-row justify-between items-center mt-3 px-2'>
                 <img src='./assets/logo.png' className='logo w-auto h-full' />
                 {
-                    isLogged ?
+                    isLogged == 1 ?
                         <div
                             className='user-account flex items-center w-max p-2 rounded-full bg-[#122633] cursor-pointer'
                             onClick={() => isShowAccount((p) => p ? false : true)}
@@ -41,15 +55,13 @@ export default function Header({isLogged, setIsLogged}) {
                     <div className='account-wrapper overflow-hidden max-w-full text-[#999999] text-ellipsis font-bold'>
                         {account}
                     </div>
-                    <img src="./assets/copyIconGreen.svg" alt='Copy Icon' className='h-[18px]' />
+                    <img src={isCopied ? "./assets/copiedIconGreen.svg" : "./assets/copyIconGreen.svg"} alt='Copy Icon' className='h-[18px] cursor-pointer' onClick={setIsCopied}/>
+
                 </div>
                 <div className='flex w-full bottom-10 absolute'>
-                    <button 
+                    <button
                         className='text-[#727279] font-bold m-auto'
-                        onClick={() => {
-                            setIsLogged(false);
-                            isShowAccount(false);
-                        }}
+                        onClick={handleLogout}
                     >
                         Log out
                     </button>

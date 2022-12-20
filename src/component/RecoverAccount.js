@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
 import Header from './Header';
+import useCookie from '../useCookie';
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -8,10 +10,34 @@ function classNames(...classes) {
 
 export default function RecoverAccount() {
     const [wordInputValue, setWordInputValue] = useState('');
-    const history = useHistory();
+    const [isLogged, updateIsLogged] = useCookie('isLogged', 0);
+    const [account, setAccount] = useCookie('address', '');
+    const [wordInputValueIsCorrect, setWordInputValueIsCorrect] = useState(true);
 
-    const findAccount = () => {
-        history.push("/");
+    const history = useHistory();
+	const backend_endpoint = process.env.REACT_APP_BACKEND_ENDPOINT;
+    const cookieExpirationDay = process.env.REACT_APP_COOKIE_EXPIRATION_DAY;
+
+    const findAccount = async () => {
+        console.log("wordInputValue:", wordInputValue);
+        var bodyFormData = new FormData();
+        bodyFormData.append('mnemonic', wordInputValue);
+        try {
+            const response = await axios.post(`${backend_endpoint}/recovery-wallet`, bodyFormData , (res, err) => {
+                return res.data;
+            });
+            if (response.data.type == "failed") {
+                setWordInputValueIsCorrect(false);
+            } else {
+                updateIsLogged(1, cookieExpirationDay);
+                setAccount(response.data, cookieExpirationDay);
+                history.push("/");
+            }
+            
+        } catch (err) {
+            setWordInputValueIsCorrect(false);
+            console.log(err);
+        }
     }
 
     return <div>
@@ -25,16 +51,19 @@ export default function RecoverAccount() {
                     Enter the backup passpharse associated with the account.
                 </p>
                 <div className='text-left mb-10'>
-                    <p className='label text-md text-[#CCCCCC] mb-1'>Passpharse (12 words)</p>
+                    <p className='label text-md text-[#CCCCCC] mb-1'>Passpharse (24 words)</p>
                     <input
                         className={classNames(
-                            wordInputValue ? 'border-[#25d695]' : 'border-[#10573C]',
-                            'bg-transparent text-[18px] text-[#CCCCCC] border-2 rounded-md w-full p-2 outline-none'
+                            'bg-transparent text-[18px] text-[#CCCCCC] border-2 rounded-md w-full p-2 outline-none',
+                            wordInputValueIsCorrect == false ? 'border-[#b70f36]' : wordInputValue ? 'border-[#25d695]' : 'border-[#10573C]'
                         )}
                         type='text'
                         value={wordInputValue}
                         placeholder='correct horse battery staple...'
-                        onChange={(e) => setWordInputValue(e.target.value)}
+                        onChange={(e) => {
+                            setWordInputValueIsCorrect(true);
+                            setWordInputValue(e.target.value);
+                        }}
                     />
                 </div>
 

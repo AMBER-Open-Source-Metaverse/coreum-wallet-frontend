@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20">
+	<title>copyIcon-svg</title>
+	<defs>
+		<image  width="20" height="20" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAMAAAC6V+0/AAAAAXNSR0IB2cksfwAAAMZQTFRFEiYzFCg1Lj1IQk9aSVVfMkFNIDE+aHB4oqKnnZ6jUV1mFio3Q1Fcl5ifen+GPUtVNkVQdXuEmZqgMUFMWmRtSFRfN0VQbHN8KDlFKTlFVWBqY2x1RFFbkJOZl5ielJadm5yhHzE9UVxmmpyhkZOaLT1JOklUlZadjI6VVmBqNENOFCg0Fyo2XGZveX+HIjNAKDlGPUpWHS87oaGnQU5ZlZacmZugn5+koKClnJ2imZqfjI+WKztHGy47X2hxnJyhO0lTGSs4+2x5BQAAAEJ0Uk5TAADA////AP////8A//////////D/////YHD/////////AP///7D//////wAA//8AYP8A////////////kAD///8AM1XugQAAAJtJREFUeJyd0NkOgjAQheFRUaYuWBEVccd9V9x3ff+X0thpSYpX/pdfOslJAWLxhCFKgixlooylM4TZnJXnooJdJHRYSR4ZyKNYrrhRDCOsejWRV1fIG9hsfWuj1SH0bTWs2+sTOiHiZ8NPHAxH48lUw9kccbHUEGC1DvRzWvsPbhRud3tkB8QjO50vV8LbXb18POVXAwQu9QJ4A4pdEmP3mtaQAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+	</style>
+	<use id="img1" href="#img1" x="0" y="0"/>
+</svg>

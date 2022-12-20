@@ -8,16 +8,15 @@ import RecoverAccount from './component/RecoverAccount';
 
 function App() {
 	
-	const [isLogged, setIsLogged] = useState(false);
 
 	return (
 		<Router>
 			<Switch>
 				<Route path="/" exact>
-					<Home isLogged={isLogged} setIsLogged={setIsLogged} />
+					<Home />
 				</Route>
 				<Route path="/setup-passphrase-new-account">
-					<SetupPassPhraseNewAccount isLogged={isLogged} setIsLogged={setIsLogged} />
+					<SetupPassPhraseNewAccount />
 				</Route>
 				<Route path="/recover-account">
 					<RecoverAccount />
