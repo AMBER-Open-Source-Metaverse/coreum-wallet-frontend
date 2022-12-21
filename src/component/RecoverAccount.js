@@ -15,19 +15,22 @@ export default function RecoverAccount() {
     const [wordInputValueIsCorrect, setWordInputValueIsCorrect] = useState(true);
 
     const history = useHistory();
-	const backend_endpoint = process.env.REACT_APP_BACKEND_ENDPOINT;
+    const backend_endpoint = process.env.REACT_APP_BACKEND_ENDPOINT;
     const cookieExpirationDay = process.env.REACT_APP_COOKIE_EXPIRATION_DAY;
 
     const findAccount = async () => {
         console.log("wordInputValue:", wordInputValue);
         var bodyFormData = new FormData();
         bodyFormData.append('mnemonic', wordInputValue);
-        try {
-            const response = await axios.post(`${backend_endpoint}/recovery-wallet`, {
-                headers: {'Access-Control-Allow-Origin': '*'}
-            }, bodyFormData , (res, err) => {
-                return res.data;
-            });
+
+        axios.post(
+            `${backend_endpoint}/recovery-wallet`, bodyFormData, {
+            headers: { 
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json'
+            }
+        }
+        ).then((response) => {
             if (response.data.type == "failed") {
                 setWordInputValueIsCorrect(false);
             } else {
@@ -35,11 +38,10 @@ export default function RecoverAccount() {
                 setAccount(response.data, cookieExpirationDay);
                 history.push("/");
             }
-            
-        } catch (err) {
+        }).catch((err) => {
             setWordInputValueIsCorrect(false);
             console.log(err);
-        }
+        })
     }
 
     return <div>

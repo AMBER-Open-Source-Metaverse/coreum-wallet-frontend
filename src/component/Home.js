@@ -13,16 +13,14 @@ export default function Home() {
     const denomDecimal = Number(process.env.REACT_APP_DENOM_DECIMAL);
 
     const getBalance = async (_account) => {
-        try {
-            const response = await axios.get(`${backend_endpoint}/get-balance/${_account}`, {
-                headers: {'Access-Control-Allow-Origin': '*'}
-            }, (res, err) => {
-                return res.data;
+
+        axios.get(`${backend_endpoint}/get-balance/${_account}`)
+            .then((response) => {
+                if (response.data.type == "success") setBalance(Number(response.data.data) / (10 ** denomDecimal));
+            })
+            .catch((err) => {
+                console.log(err);
             });
-            if (response.data.type == "success") setBalance(Number(response.data.data) / (10 ** denomDecimal));
-        } catch (err) {
-            console.log(err);
-        }
     }
 
     useState(() => {

@@ -17,18 +17,16 @@ export default function SetupPassPhraseNewAccount() {
 	const backend_endpoint = process.env.REACT_APP_BACKEND_ENDPOINT;
 
 	const createNewAccount = async () => {
-		try {
-			const response = await axios.get(`${backend_endpoint}/create-new-wallet`, {
-                headers: {'Access-Control-Allow-Origin': '*'}
-            }, (res, err) => {
-				return res.data;
+		
+		axios.get(`${backend_endpoint}/create-new-wallet`)
+			.then((response) => {
+				setMnemonicStr(response.data.mnemonic);
+				setPassphrase(response.data.mnemonic.split(/[ ,]+/));
+				setAccount(response.data.address);
+			})
+			.catch((err) => {
+				console.log(err);
 			});
-			setMnemonicStr(response.data.mnemonic);
-			setPassphrase(response.data.mnemonic.split(/[ ,]+/));
-			setAccount(response.data.address);
-		} catch (err) {
-			console.log(err);
-		}
 	}
 
 	const handleContinue = () => {
@@ -93,7 +91,7 @@ export default function SetupPassPhraseNewAccount() {
 						<Link to="/" className='text-[#727279] my-10 font-bold w-max m-auto'>Cancel</Link>
 					</div>
 					:
-					<VerfiyPharse targetWord={passphrase[selectedWordIndex]} targetIndex={selectedWordIndex} account={account}/>
+					<VerfiyPharse targetWord={passphrase[selectedWordIndex]} targetIndex={selectedWordIndex} account={account} />
 			}
 
 		</div>
