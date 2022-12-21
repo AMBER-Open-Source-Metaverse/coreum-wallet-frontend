@@ -23,25 +23,19 @@ export default function RecoverAccount() {
         var bodyFormData = new FormData();
         bodyFormData.append('mnemonic', wordInputValue);
 
-        axios.post(
-            `${backend_endpoint}/recovery-wallet`, bodyFormData, {
-            headers: { 
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json'
-            }
-        }
-        ).then((response) => {
-            if (response.data.type == "failed") {
+        axios.post(`${backend_endpoint}/recovery-wallet`, bodyFormData )
+            .then((response) => {
+                if (response.data.type == "failed") {
+                    setWordInputValueIsCorrect(false);
+                } else {
+                    updateIsLogged(1, cookieExpirationDay);
+                    setAccount(response.data, cookieExpirationDay);
+                    history.push("/");
+                }
+            }).catch((err) => {
                 setWordInputValueIsCorrect(false);
-            } else {
-                updateIsLogged(1, cookieExpirationDay);
-                setAccount(response.data, cookieExpirationDay);
-                history.push("/");
-            }
-        }).catch((err) => {
-            setWordInputValueIsCorrect(false);
-            console.log(err);
-        })
+                console.log(err);
+            })
     }
 
     return <div>
