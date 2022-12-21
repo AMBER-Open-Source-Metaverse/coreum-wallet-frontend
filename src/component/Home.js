@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from './Header';
 import useCookie from '../useCookie';
 import axios from 'axios';
+import infoIcon from "../assets/infoIcon.svg";
 
 export default function Home() {
 
@@ -38,7 +39,7 @@ export default function Home() {
                         </p>
                         <div className='inline-flex justify-center'>
                             <p className='text-[#686E71] font-bold mr-2'>Available Balance</p>
-                            <img src='./assets/infoIcon.svg' className='logo w-auto h-full cursor-pointer' />
+                            <img src={infoIcon} className='logo w-auto h-full cursor-pointer' />
                         </div>
                     </div>
                     :

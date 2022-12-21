@@ -4,6 +4,9 @@ import Header from './Header';
 import VerfiyPharse from './VerifyPharse';
 import axios from 'axios';
 import useClipboard from 'react-use-clipboard';
+import copyIcon from "../assets/copyIcon.svg";
+import copiedIcon from "../assets/copiedIcon.svg";
+import syncIcon from "../assets/syncIcon.svg";
 
 export default function SetupPassPhraseNewAccount() {
 	const [passphrase, setPassphrase] = useState([]);
@@ -70,14 +73,14 @@ export default function SetupPassPhraseNewAccount() {
 									className='bg-[#122633] px-10 py-3 rounded-full w-max m-auto inline-flex items-center'
 									onClick={setIsCopied}
 								>
-									<img src={isCopied ? "./assets/copiedIcon.svg" : "./assets/copyIcon.svg"} alt='Copy Icon' className='h-[18px]' />
+									<img src={isCopied ? copiedIcon : copyIcon} alt='Copy Icon' className='h-[18px]' />
 									<p className='font-bold ml-2 text-[#25d695]'>Cpoy</p>
 								</button>
 								<button
 									className='bg-[#122633] px-10 py-3 rounded-full w-max m-auto inline-flex items-center'
 									onClick={createNewAccount}
 								>
-									<img src="./assets/syncIcon.svg" alt='Sync Icon' className='h-[18px]' />
+									<img src={syncIcon} alt='Sync Icon' className='h-[18px]' />
 									<p className='font-bold ml-2 text-[#25d695]'>Generate New</p>
 								</button>
 							</div>

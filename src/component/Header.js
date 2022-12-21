@@ -3,6 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import useClipboard from 'react-use-clipboard';
 import useCookie from '../useCookie';
+import logo from "../assets/logo.png";
+import copyIconGreen from "../assets/copyIconGreen.svg";
+import copiedIconGreen from "../assets/copiedIconGreen.svg";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -27,7 +30,7 @@ export default function Header() {
     return (
         <div className='header absolute w-full'>
             <div className='absolute z-20 w-full h-7 flex flex-row justify-between items-center mt-3 px-2'>
-                <img src='./assets/logo.png' className='logo w-auto h-full' />
+                <img src={logo} className='logo w-auto h-full' />
                 {
                     isLogged == 1 ?
                         <div
@@ -55,7 +58,7 @@ export default function Header() {
                     <div className='account-wrapper overflow-hidden max-w-full text-[#999999] text-ellipsis font-bold'>
                         {account}
                     </div>
-                    <img src={isCopied ? "./assets/copiedIconGreen.svg" : "./assets/copyIconGreen.svg"} alt='Copy Icon' className='h-[18px] cursor-pointer' onClick={setIsCopied}/>
+                    <img src={isCopied ? copiedIconGreen : copyIconGreen} alt='Copy Icon' className='h-[18px] cursor-pointer' onClick={setIsCopied}/>
 
                 </div>
                 <div className='flex w-full bottom-10 absolute'>
