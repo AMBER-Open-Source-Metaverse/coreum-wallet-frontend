@@ -14,7 +14,9 @@ export default function Home() {
 
     const getBalance = async (_account) => {
         try {
-            const response = await axios.get(`${backend_endpoint}/get-balance/${_account}`, (res, err) => {
+            const response = await axios.get(`${backend_endpoint}/get-balance/${_account}`, {
+                headers: {'Access-Control-Allow-Origin': '*'}
+            }, (res, err) => {
                 return res.data;
             });
             if (response.data.type == "success") setBalance(Number(response.data.data) / (10 ** denomDecimal));

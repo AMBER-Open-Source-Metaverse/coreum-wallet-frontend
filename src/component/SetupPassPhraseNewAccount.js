@@ -18,7 +18,9 @@ export default function SetupPassPhraseNewAccount() {
 
 	const createNewAccount = async () => {
 		try {
-			const response = await axios.get(`${backend_endpoint}/create-new-wallet`, (res, err) => {
+			const response = await axios.get(`${backend_endpoint}/create-new-wallet`, {
+                headers: {'Access-Control-Allow-Origin': '*'}
+            }, (res, err) => {
 				return res.data;
 			});
 			setMnemonicStr(response.data.mnemonic);

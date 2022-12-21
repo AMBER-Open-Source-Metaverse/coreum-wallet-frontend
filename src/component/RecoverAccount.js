@@ -23,7 +23,9 @@ export default function RecoverAccount() {
         var bodyFormData = new FormData();
         bodyFormData.append('mnemonic', wordInputValue);
         try {
-            const response = await axios.post(`${backend_endpoint}/recovery-wallet`, bodyFormData , (res, err) => {
+            const response = await axios.post(`${backend_endpoint}/recovery-wallet`, {
+                headers: {'Access-Control-Allow-Origin': '*'}
+            }, bodyFormData , (res, err) => {
                 return res.data;
             });
             if (response.data.type == "failed") {
