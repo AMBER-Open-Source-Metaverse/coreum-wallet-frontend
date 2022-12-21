@@ -7,22 +7,26 @@ import SetupPassPhraseNewAccount from './component/SetupPassPhraseNewAccount';
 import RecoverAccount from './component/RecoverAccount';
 
 function App() {
-	
+
 
 	return (
-		<Router>
-			<Switch>
-				<Route path="/" exact>
-					<Home />
-				</Route>
-				<Route path="/setup-passphrase-new-account">
-					<SetupPassPhraseNewAccount />
-				</Route>
-				<Route path="/recover-account">
-					<RecoverAccount />
-				</Route>
-			</Switch>
-		</Router>
+		<div className='bg-[#070f15]'>
+			<div className=' max-w-[625px] left-[50%] translate-x-[-50%] relative'>
+				<Router>
+					<Switch>
+						<Route path="/" exact>
+							<Home />
+						</Route>
+						<Route path="/setup-passphrase-new-account">
+							<SetupPassPhraseNewAccount />
+						</Route>
+						<Route path="/recover-account">
+							<RecoverAccount />
+						</Route>
+					</Switch>
+				</Router>
+			</div>
+		</div>
 	);
 }
 
