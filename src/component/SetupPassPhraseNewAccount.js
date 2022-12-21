@@ -74,7 +74,7 @@ export default function SetupPassPhraseNewAccount() {
 									onClick={setIsCopied}
 								>
 									<img src={isCopied ? copiedIcon : copyIcon} alt='Copy Icon' className='h-[18px]' />
-									<p className='font-bold ml-2 text-[#25d695]'>Cpoy</p>
+									<p className='font-bold ml-2 text-[#25d695]'>Copy</p>
 								</button>
 								<button
 									className='bg-[#122633] px-10 py-3 rounded-full w-max m-auto inline-flex items-center'
